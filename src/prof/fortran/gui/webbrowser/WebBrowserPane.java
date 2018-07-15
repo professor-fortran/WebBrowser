@@ -84,4 +84,20 @@ public class WebBrowserPane extends JEditorPane {
         }
     }
 
+    public boolean isLastPageInHistory() {
+        int size = history.size();
+        if (size == 0 || size == 1) {
+            return true;
+        }
+        return historyIndex == size - 1;
+    }
+
+    public boolean isFirstPageInHistory() {
+        int size = history.size();
+        if (size == 0 || size == 1) {
+            return true;
+        }
+        return historyIndex == 0;
+    }
+
 }

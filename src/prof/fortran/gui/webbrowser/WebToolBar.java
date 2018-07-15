@@ -25,7 +25,7 @@ public class WebToolBar extends JToolBar implements HyperlinkListener {
     private JTextField urlTextField;
 
     /**
-     * Коструктор WebToolBar
+     * Конструктор WebToolBar
      */
     public WebToolBar(WebBrowserPane browser) {
         super("Web Navigation");
@@ -47,6 +47,8 @@ public class WebToolBar extends JToolBar implements HyperlinkListener {
                             // попытка загрузить страницу в WebBrowserPane
                             URL url = new URL(urlTextField.getText());
                             webBrowserPane.goToURL(url);
+
+                            checkBackForwardButtons();
                         } catch (MalformedURLException urlException) {
                             // обработка ошибочного URL
                             urlException.printStackTrace();
@@ -68,6 +70,8 @@ public class WebToolBar extends JToolBar implements HyperlinkListener {
 
                         // отображение URL в поле urlTextField
                         urlTextField.setText(url.toString());
+
+                        checkBackForwardButtons();
                     }
                 }
         );
@@ -85,9 +89,13 @@ public class WebToolBar extends JToolBar implements HyperlinkListener {
 
                         // отображение нового URL в поле urlTextField
                         urlTextField.setText(url.toString());
+
+                        checkBackForwardButtons();
                     }
                 }
         );
+
+        checkBackForwardButtons();
 
         // добавление компонентов JButton-ов и JTextField в панель WebToolBar
         add(backButton);
@@ -109,7 +117,26 @@ public class WebToolBar extends JToolBar implements HyperlinkListener {
                 // переход пo URL и отображение URL в поле urlTextField
                 webBrowserPane.goToURL(url);
                 urlTextField.setText(url.toString());
+
+                checkBackForwardButtons();
             }
+        }
+    }
+
+    /**
+     * Проверка на то, нужно ли нам включать/выключать кнопки перемещения по истории
+     */
+    private void checkBackForwardButtons() {
+        if (webBrowserPane.isFirstPageInHistory()) {
+            backButton.setEnabled(false);
+        } else {
+            backButton.setEnabled(true);
+        }
+
+        if (webBrowserPane.isLastPageInHistory()) {
+            forwardButton.setEnabled(false);
+        } else {
+            forwardButton.setEnabled(true);
         }
     }
 
